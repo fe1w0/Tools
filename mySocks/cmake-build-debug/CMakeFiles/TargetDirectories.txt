@@ -1,0 +1,3 @@
+/mnt/d/fe1w0/report/myProject/mySocks/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/mnt/d/fe1w0/report/myProject/mySocks/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/d/fe1w0/report/myProject/mySocks/cmake-build-debug/CMakeFiles/mySocks.dir

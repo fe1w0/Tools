@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/d/fe1w0/report/myProject/mySocks/aes/aes.c
+stdint.h
+-
+string.h
+-
+aes.h
+/mnt/d/fe1w0/report/myProject/mySocks/aes/aes.h
+
+/mnt/d/fe1w0/report/myProject/mySocks/aes/aes.h
+stdint.h
+-
+

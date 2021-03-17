@@ -1,0 +1,4 @@
+ToolSet: Kali GNU/Linux Rolling (local)@C:\Users\22343\AppData\Local\Microsoft\WindowsApps\kali.exe
+Options: 
+
+Options:
