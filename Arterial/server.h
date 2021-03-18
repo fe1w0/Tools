@@ -12,14 +12,16 @@
 #include "iostream"
 #include "cstring"
 
-#pragma comment (lib, "ws2_32.lib")  //鍔犺浇 ws2_32.dll
+#pragma comment (lib, "ws2_32.lib")  //加载 ws2_32.dll
 
 /**
- * 寮�鍚枃浠朵紶杈撴湇鍔＄
+ * 开启文件传输服务端
  * @param config
  */
 void serverStart(Config config);
-
-void sendFile(Config config,SOCKET clntSock);
+/*
+ * 接收文件
+ */
+void recvFile(Config  config, SOCKET sock);
 
 #endif //ARTERIAL_SERVER_H

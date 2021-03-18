@@ -4,59 +4,61 @@
 
 #include "client.h"
 
-char * getIPV4(char * domainName){
-    WSADATA wsaData;
-    WSAStartup( MAKEWORD(2, 2), &wsaData);
-    struct hostent *host = gethostbyname(domainName);
-    return inet_ntoa( *(struct in_addr*)host->h_addr_list[0] ) ;
-}
-
-void clientStart(Config config){
-    //åˆå§‹åŒ–DLL
+char* getIPV4(char* domainName) {
     WSADATA wsaData;
     WSAStartup(MAKEWORD(2, 2), &wsaData);
-    //åˆ›å»ºå¥—æ¥å­—
+    struct hostent* host = gethostbyname(domainName);
+    return inet_ntoa(*(struct in_addr*)host->h_addr_list[0]);
+}
+
+void clientStart(Config config) {
+    //³õÊ¼»¯DLL
+    WSADATA wsaData;
+    WSAStartup(MAKEWORD(2, 2), &wsaData);
+    //´´½¨Ì×½Ó×Ö
     SOCKET sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-    //å‘æœåŠ¡å™¨å‘èµ·è¯·æ±‚
+    //Ïò·şÎñÆ÷·¢ÆğÇëÇó
     sockaddr_in sockAddr;
-    memset(&sockAddr, 0, sizeof(sockAddr));  //æ¯ä¸ªå­—èŠ‚éƒ½ç”¨0å¡«å……
+    memset(&sockAddr, 0, sizeof(sockAddr));  //Ã¿¸ö×Ö½Ú¶¼ÓÃ0Ìî³ä
     sockAddr.sin_family = PF_INET;
 
-    char * serverHost = getIPV4(config.serverHost);
+    char* serverHost = getIPV4(config.serverHost);
     sockAddr.sin_addr.s_addr = inet_addr(serverHost);
 
     sockAddr.sin_port = htons(config.port);
 
     printf("The client is created\n");
     connect(sock, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR));
-    //æ¥æ”¶æœåŠ¡å™¨ä¼ å›çš„æ•°æ®
-    recvFile(config,sock);
-    //å…³é—­å¥—æ¥å­—
+    //½ÓÊÕ·şÎñÆ÷´«»ØµÄÊı¾İ
+    sendFile(config, sock);
+    //¹Ø±ÕÌ×½Ó×Ö
     closesocket(sock);
-    //ç»ˆæ­¢ä½¿ç”¨ DLL
+    //ÖÕÖ¹Ê¹ÓÃ DLL
     WSACleanup();
-//    system("pause");
-    return ;
+    //    system("pause");
+    return;
 }
 
-void recvFile(Config  config,SOCKET sock){
-    printf("%s file waiting to be received\n",config.fileName);
-
-    //å…ˆè¾“å…¥æ–‡ä»¶åï¼Œçœ‹æ–‡ä»¶æ˜¯å¦èƒ½åˆ›å»ºæˆåŠŸ
-    char * fileName = config.fileName;
-    FILE *fp = fopen(fileName, "wb");  //ä»¥äºŒè¿›åˆ¶æ–¹å¼æ‰“å¼€ï¼ˆåˆ›å»ºï¼‰æ–‡ä»¶
-    if(fp == NULL){
-        printf("Cannot open file, press any key to exit!\n");
+void sendFile(Config config, SOCKET clntSock) {
+    printf("%s file waiting to be sent\n", config.fileName);
+    char* fileName = config.fileName;
+    FILE* fp = fopen(fileName, "rb");
+    if (fp == NULL) {
+        printf("Cannot open file, press any key to exit! \n");
         system("pause");
         exit(0);
     }
-
-    char buffer[BUF_SIZE] = {0};  //æ–‡ä»¶ç¼“å†²åŒº
+    char buffer[BUF_SIZE] = { 0 };
     int nCount;
-    while( (nCount = recv(sock, buffer, BUF_SIZE, 0)) > 0 ){
-        fwrite(buffer, nCount, 1, fp);
+
+    //Ñ­»··¢ËÍÊı¾İ£¬Ö±µ½ÎÄ¼ş½áÎ²
+    while ((nCount = fread(buffer, 1, BUF_SIZE, fp)) > 0) {
+        send(clntSock, buffer, nCount, 0);
     }
-    printf("File transfer success!\n");
+
+    shutdown(clntSock, SD_SEND);  //ÎÄ¼ş¶ÁÈ¡Íê±Ï£¬¶Ï¿ªÊä³öÁ÷£¬Ïò¿Í»§¶Ë·¢ËÍFIN°ü
+    recv(clntSock, buffer, BUF_SIZE, 0); //×èÈû£¬µÈ´ı¿Í»§¶Ë½ÓÊÕÍê±Ï
 
     fclose(fp);
+    printf("File transferred\n");
 }

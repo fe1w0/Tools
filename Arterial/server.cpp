@@ -4,63 +4,59 @@
 
 #include "server.h"
 
-void serverStart(Config config){
-    //åˆå§‹åŒ– DLL
+void serverStart(Config config) {
+    //³õÊ¼»¯ DLL
     WSADATA wsaData;
-    WSAStartup( MAKEWORD(2, 2), &wsaData);
-    //åˆ›å»ºå¥—æ¥å­—
+    WSAStartup(MAKEWORD(2, 2), &wsaData);
+    //´´½¨Ì×½Ó×Ö
     SOCKET servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-    //ç»‘å®šå¥—æ¥å­—
+    //°ó¶¨Ì×½Ó×Ö
     sockaddr_in sockAddr;
-    memset(&sockAddr, 0, sizeof(sockAddr));  //æ¯ä¸ªå­—èŠ‚éƒ½ç”¨0å¡«å……
-    sockAddr.sin_family = PF_INET;  //ä½¿ç”¨IPv4åœ°å€
-    sockAddr.sin_addr.s_addr = htonl(INADDR_ANY);  //å…·ä½“çš„IPåœ°å€
-    sockAddr.sin_port = htons(config.port);  //ç«¯å£
+    memset(&sockAddr, 0, sizeof(sockAddr));  //Ã¿¸ö×Ö½Ú¶¼ÓÃ0Ìî³ä
+    sockAddr.sin_family = PF_INET;  //Ê¹ÓÃIPv4µØÖ·
+    sockAddr.sin_addr.s_addr = htonl(INADDR_ANY);  //¾ßÌåµÄIPµØÖ·
+    sockAddr.sin_port = htons(config.port);  //¶Ë¿Ú
     bind(servSock, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR));
     listen(servSock, 20);
 
 
-    //è¿›å…¥ç›‘å¬çŠ¶æ€
+    //½øÈë¼àÌı×´Ì¬
     printf("Enter the monitoring state\n");
 
     SOCKADDR clntAddr;
     int  nSize = sizeof(SOCKADDR);
     SOCKET clntSock = accept(servSock, (SOCKADDR*)&clntAddr, &nSize);
 
+    recvFile(config, clntSock);
 
-    sendFile(config,clntSock);
-
-    //å…³é—­å¥—æ¥å­—
+    //¹Ø±ÕÌ×½Ó×Ö
     closesocket(clntSock);
     closesocket(servSock);
-    //ç»ˆæ­¢ DLL çš„ä½¿ç”¨
+    //ÖÕÖ¹ DLL µÄÊ¹ÓÃ
     WSACleanup();
 
-//    system("pause");
-    return ;
+    //    system("pause");
+    return;
 }
 
+void recvFile(Config  config, SOCKET sock) {
+    printf("%s file waiting to be received\n", config.fileName);
 
-void sendFile(Config config,SOCKET clntSock){
-    printf("%s file waiting to be sent\n",config.fileName);
-    char * fileName = config.fileName;
-    FILE * fp = fopen(fileName,"rb");
-    if(fp == NULL){
-        printf("Cannot open file, press any key to exit! \n");
+    //ÏÈÊäÈëÎÄ¼şÃû£¬¿´ÎÄ¼şÊÇ·ñÄÜ´´½¨³É¹¦
+    char* fileName = config.fileName;
+    FILE* fp = fopen(fileName, "wb");  //ÒÔ¶ş½øÖÆ·½Ê½´ò¿ª£¨´´½¨£©ÎÄ¼ş
+    if (fp == NULL) {
+        printf("Cannot open file, press any key to exit!\n");
         system("pause");
         exit(0);
     }
-    char buffer[BUF_SIZE] = {0};
+
+    char buffer[BUF_SIZE] = { 0 };  //ÎÄ¼ş»º³åÇø
     int nCount;
-
-    //å¾ªç¯å‘é€æ•°æ®ï¼Œç›´åˆ°æ–‡ä»¶ç»“å°¾
-    while( (nCount = fread(buffer,1,BUF_SIZE,fp)) >0 ){
-        send(clntSock,buffer,nCount,0);
+    while ((nCount = recv(sock, buffer, BUF_SIZE, 0)) > 0) {
+        fwrite(buffer, nCount, 1, fp);
     }
-
-    shutdown(clntSock,SD_SEND);  //æ–‡ä»¶è¯»å–å®Œæ¯•ï¼Œæ–­å¼€è¾“å‡ºæµï¼Œå‘å®¢æˆ·ç«¯å‘é€FINåŒ…
-    recv(clntSock,buffer,BUF_SIZE,0); //é˜»å¡ï¼Œç­‰å¾…å®¢æˆ·ç«¯æ¥æ”¶å®Œæ¯•
+    printf("File transfer success!\n");
 
     fclose(fp);
-    printf("File transferred\n");
 }

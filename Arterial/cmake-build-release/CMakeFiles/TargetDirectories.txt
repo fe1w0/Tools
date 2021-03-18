@@ -1,3 +1,0 @@
-G:/myProject/Tools/Arterial/cmake-build-release/CMakeFiles/Arterial.dir
-G:/myProject/Tools/Arterial/cmake-build-release/CMakeFiles/edit_cache.dir
-G:/myProject/Tools/Arterial/cmake-build-release/CMakeFiles/rebuild_cache.dir

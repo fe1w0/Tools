@@ -1,0 +1,2 @@
+G:\myProject\Tools\Arterial\Arterial\Debug\Arterial.exe
+G:\myProject\Tools\Arterial\Arterial\Debug\Arterial.pdb

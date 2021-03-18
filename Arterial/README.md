@@ -8,7 +8,7 @@
 
 `Arterial` (动脉)项目,功能如下:
 
-适用于Windows 环境,支持域名或IP地址为服务地址发送文件。
+支持域名或IP地址为服务地址发送文件,服务端接受文件,客户端发送文件。
 
 ## 使用
 
@@ -20,10 +20,4 @@ Usage:
 
 ## 效果
 
-`ServerName: 127.0.0.1`
-
-![image-20210316172245326](C:\Users\22343\AppData\Roaming\Typora\typora-user-images\image-20210316172245326.png)
-
-`ServerName: localhost`
-
-![image-20210317185350787](C:\Users\22343\AppData\Roaming\Typora\typora-user-images\image-20210317185350787.png)
+![Arterial](http://img.xzaslxr.xyz/Arterial.gif)

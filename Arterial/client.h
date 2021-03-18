@@ -11,24 +11,23 @@
 #include "iostream"
 #include <stdio.h>
 
-#pragma comment(lib, "ws2_32.lib")  //鍔犺浇 ws2_32.dll
+#pragma comment(lib, "ws2_32.lib")  //加载 ws2_32.dll
 
 #include "config.h"
 
 /*
- * 瑙ｆ瀽鍩熷悕,骞惰繑鍥炵涓�涓狪PV4鍦板潃
+ * 解析域名,并返回第一个IPV4地址
  */
-char * getIPV4(char * domainName);
+char* getIPV4(char* domainName);
 
 /*
- * 寮�鍚枃浠朵紶杈撳鎴风
+ * 开启文件传输客户端
  */
 void clientStart(Config config);
 
 /*
- * 鎺ユ敹鏂囦欢
- */
-void recvFile(Config  config,SOCKET sock);
-
+* 发送文件
+*/
+void sendFile(Config config, SOCKET sock);
 
 #endif //ARTERIAL_CLIENT_H

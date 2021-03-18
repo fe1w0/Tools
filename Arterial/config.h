@@ -6,12 +6,12 @@
 #define ARTERIAL_CONFIG_H
 #define BUF_SIZE 1024
 
-struct Config{
-    int port;   // -p [port], æœ¬åœ°ç›‘å¬ç«¯å£ OR  å®¢æˆ·ç«¯æ¨¡å¼ä¸‹ï¼Œéœ€è¦æŒ‡å®šæœåŠ¡ç«¯ç«¯å£
-    int client =0;      // å®¢æˆ·ç«¯æ¨¡å¼
-    int server =0;      // æœåŠ¡ç«¯æ¨¡å¼
-    char * serverHost;  // å®¢æˆ·ç«¯æ¨¡å¼ä¸‹ï¼Œéœ€è¦æŒ‡å®šæœåŠ¡ç«¯åœ°å€
-    char * fileName; //æŒ‡å®šçš„æ–‡ä»¶å
+struct Config {
+    int port;   // -p [port], ±¾µØ¼àÌı¶Ë¿Ú OR  ¿Í»§¶ËÄ£Ê½ÏÂ£¬ĞèÒªÖ¸¶¨·şÎñ¶Ë¶Ë¿Ú
+    int client = 0;      // ¿Í»§¶ËÄ£Ê½
+    int server = 0;      // ·şÎñ¶ËÄ£Ê½
+    char* serverHost;  // ¿Í»§¶ËÄ£Ê½ÏÂ£¬ĞèÒªÖ¸¶¨·şÎñ¶ËµØÖ·
+    char* fileName; //Ö¸¶¨µÄÎÄ¼şÃû
 };
 
 #endif //ARTERIAL_CONFIG_H
